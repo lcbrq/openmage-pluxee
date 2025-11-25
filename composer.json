@@ -1,0 +1,13 @@
+{
+    "name": "lcbrq/openmage-pluxee",
+    "license": ["proprietary"],
+    "type": "magento-module",
+    "description": "Unofficial Pluxee Group integration for OpenMage (Magento 1)",
+    "keywords": ["composer-installer", "magento", "openmage", "mahocommerce", "pluxee"],
+    "require": {
+        "symfony/http-client": "*"
+    },
+    "extra": {
+        "magento-root-dir": "test/"
+    }
+}
