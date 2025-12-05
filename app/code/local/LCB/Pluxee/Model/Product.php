@@ -58,7 +58,7 @@ class LCB_Pluxee_Model_Product extends Mage_Core_Model_Abstract
      */
     public function getImageUrl()
     {
-        $image = parent::getImage();
+        $image = parent::getPicture();
         if (filter_var($image, FILTER_VALIDATE_URL)) {
             $imageUrl =  str_replace('test.', '', $image);
         } elseif ($image) {

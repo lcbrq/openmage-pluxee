@@ -44,7 +44,7 @@ class LCB_Pluxee_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abst
         /**
          * new article-part relationships
          */
-        $categoryIds = $reward->getCategoryIds();
+        $categoryIds = $product->getCategoryIds();
 
         /**
          * Ignore save on null
@@ -56,7 +56,7 @@ class LCB_Pluxee_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abst
         /**
          * old product-category relationships
          */
-        $oldCategoryIds = $this->getCategories($reward);
+        $oldCategoryIds = $this->getCategories($product);
 
         $insert = array_diff_key($categoryIds, $oldCategoryIds);
         $delete = array_diff_key($oldCategoryIds, $categoryIds);

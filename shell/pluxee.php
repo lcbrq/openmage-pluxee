@@ -36,6 +36,9 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
                     $product->setSku($reference['sku']);
                     $product->setPrice($reference['price']['grand_total']);
                 }
+                foreach ($productData['pictures'] as $picture) {
+                    $product->setPicture($picture['path']);
+                }
                 $product->save();
 
                 $this->output(sprintf("Imported product %s", $product->getLabel()));

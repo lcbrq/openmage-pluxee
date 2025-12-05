@@ -78,5 +78,10 @@
                 </lcb_pluxee>
             </updates>
         </layout>
+        <csp>
+            <img-src>
+                <sayreward>*.sayreward.pl</sayreward>
+            </img-src>
+        </csp>
     </frontend>
 </config>
