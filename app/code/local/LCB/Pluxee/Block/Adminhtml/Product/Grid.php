@@ -36,6 +36,13 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
             'index' => 'product_id',
         ));
 
+        $this->addColumn('item_type', array(
+            'header' => Mage::helper('lcb_pluxee')->__('Type'),
+            'index' => 'item_type',
+            'type' => 'options',
+            'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toArray(),
+        ));
+
         $this->addColumn('label', array(
             'header' => Mage::helper('lcb_pluxee')->__('Label'),
             'index' => 'label',

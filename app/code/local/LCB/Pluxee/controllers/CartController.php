@@ -61,7 +61,15 @@ class LCB_Pluxee_CartController extends Mage_Core_Controller_Front_Action
             }
         }
 
-        $order = Mage::getModel('lcb_pluxee/api')->purchase($customer, $product);
+        $card = null;
+        if ($cardNumber = $this->getRequest()->getParam('card_number')) {
+            $card = new Varien_Object([
+                'number' => $cardNumber,
+                'amount' => $points,
+            ]);
+        }
+
+        $order = Mage::getModel('lcb_pluxee/api')->purchase($customer, $product, $card);
 
         if (is_string($order)) {
             Mage::log($order, null, 'pluxee.log', true);

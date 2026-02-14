@@ -1,6 +1,5 @@
 <?php
 
-
 $installer = $this;
 $installer->startSetup();
 
@@ -65,6 +64,13 @@ $productsTable = $installer->getConnection()->newTable($installer->getTable('lcb
             null,
             array(),
             'Pluxee Brand ID'
+        )
+        ->addColumn(
+            'item_type',
+            Varien_Db_Ddl_Table::TYPE_INTEGER,
+            null,
+            array(),
+            'Pluxee Item Type'
         )
         ->addColumn(
             'description',

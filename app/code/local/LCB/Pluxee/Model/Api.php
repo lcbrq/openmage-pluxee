@@ -7,6 +7,8 @@ use Symfony\Component\HttpClient\HttpClient;
  */
 class LCB_Pluxee_Model_Api
 {
+    public const SESSION_FLAG_CODE = 'pluxee_session';
+
     /**
      * @var string
      */
@@ -51,7 +53,7 @@ class LCB_Pluxee_Model_Api
     }
 
     /**
-     * @return void
+     * @return array
      */
     public function login()
     {
@@ -63,19 +65,23 @@ class LCB_Pluxee_Model_Api
 
             $result = json_decode($response, true);
 
-            $this->userId = $result['Response']['user_id'];
-            $this->sessionId = $result['Response']['sessionId'];
+            if (!empty($result['Response']['user_id']) && !empty($result['Response']['sessionId'])) {
+                $this->userId = $result['Response']['user_id'];
+                $this->sessionId = $result['Response']['sessionId'];
+
+                Mage::getModel('lcb_pluxee/api_session')->create($result['Response']);
+            }
         }
 
-        return $this->sessionId;
+        return $result;
     }
 
     /**
      * @return void
      */
-    public function logout()
+    public function logout(): void
     {
-        $response = $this->request('api/Authentication/Session/logout ');
+        $this->request('api/Authentication/Session/logout');
     }
 
 
@@ -124,21 +130,37 @@ class LCB_Pluxee_Model_Api
     /**
      * @param Gtx_Customer_Model_Customer_Customer
      * @param LCB_Pluxee_Model_Product
+     * @param Varien_Object|null $card
      * @return LCB_Pluxee_Model_Order|string
      */
-    public function purchase($customer, $product)
+    public function purchase($customer, $product, $card = null)
     {
         $this->login();
 
-        $data = array(
-          'id' => $this->userId,
-          'references' => array(
-              array(
-                "reference_id" => (int) $product->getReferenceId(),
-                "quantity" => 1,
-              )
-           )
-        );
+        if (!$card) {
+            $data = array(
+              'id' => $this->userId,
+              'references' => array(
+                  array(
+                    'reference_id' => (int) $product->getReferenceId(),
+                    "quantity" => 1,
+                  )
+               )
+            );
+        } else {
+            $data = array(
+              'id' => $this->userId,
+              'references' => array(
+                  array(
+                    'reference_id' => (int) $product->getReferenceId(),
+                    'card' => array(
+                        'number' => $card->getNumber(),
+                        'amount' => $card->getAmount(),
+                    )
+                  )
+               )
+            );
+        }
 
         $response = $this->request('api/Catalogue/Selections/addItems', $data);
 

@@ -1,3 +1,4 @@
 app/code/local/LCB/Pluxee
 app/etc/modules/LCB_Pluxee.xml
+app/locale/pl_PL/LCB_Pluxee.csv
 shell/pluxee.php
