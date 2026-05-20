@@ -8,10 +8,7 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeProductController extends Mage_Adminhtml_C
     /**
      * @inheritDoc
      */
-    protected function _isAllowed()
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('pluxee/products');
-    }
+    public const ADMIN_RESOURCE = 'pluxee/products';
 
     protected function _initAction()
     {

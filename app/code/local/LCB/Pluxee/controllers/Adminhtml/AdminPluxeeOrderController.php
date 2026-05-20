@@ -8,10 +8,7 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeOrderController extends Mage_Adminhtml_Con
     /**
      * @inheritDoc
      */
-    protected function _isAllowed()
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('pluxee/orders');
-    }
+    public const ADMIN_RESOURCE = 'pluxee/orders';
 
     protected function _initAction()
     {

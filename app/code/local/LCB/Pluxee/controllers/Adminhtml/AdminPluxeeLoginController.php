@@ -8,10 +8,7 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeLoginController extends Mage_Adminhtml_Con
     /**
      * @inheritDoc
      */
-    protected function _isAllowed()
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('system/config/pluxee');
-    }
+    public const ADMIN_RESOURCE = 'system/config/pluxee';
 
     /**
      * @return void
