@@ -30,6 +30,8 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
                 $product = Mage::getModel('lcb_pluxee/product')->load($productData['id'], 'product_id');
                 $product->setProductId($productData['id']);
                 unset($productData['id']);
+
+                $product->setPosition($productData['priority']);
                 $product->addData($productData);
                 foreach ($productData['references'] as $reference) {
                     $product->setReferenceId($reference['id']);

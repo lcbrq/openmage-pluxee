@@ -20,11 +20,11 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit_Tab_Form extends Mage_Adminhtml_Bl
             'values' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toOptionArray()
         ));
 
-        $fieldset->addField('title', 'text', array(
+        $fieldset->addField('label', 'text', array(
             'label' => Mage::helper('lcb_pluxee')->__('Title'),
             'class' => 'required-entry',
             'required' => true,
-            'name' => 'title',
+            'name' => 'label',
         ));
 
         $fieldset->addField('description', 'textarea', array(
@@ -39,10 +39,10 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit_Tab_Form extends Mage_Adminhtml_Bl
             'name' => 'purchase_info',
         ));
 
-        $fieldset->addField('worth', 'text', array(
+        $fieldset->addField('price', 'text', array(
             'label' => Mage::helper('lcb_pluxee')->__('Value'),
             'class' => '',
-            'name' => 'worth',
+            'name' => 'price',
         ));
 
         $fieldset->addField('image', 'image', array(

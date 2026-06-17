@@ -44,10 +44,7 @@ class LCB_Pluxee_Model_Api
      */
     public function __construct()
     {
-        if (Mage::getStoreConfig('pluxee/api/test')) {
-            $this->endpoint = 'https://programlojalnosciowy.dev.sayreward.pl';
-        }
-
+        $this->endpoint = Mage::getStoreConfig('pluxee/api/endpoint');
         $this->username = Mage::getStoreConfig('pluxee/api/username');
         $this->password = Mage::getModel('core/encryption')->decrypt((string) Mage::getStoreConfig('pluxee/api/password'));
     }
@@ -81,9 +78,9 @@ class LCB_Pluxee_Model_Api
      */
     public function logout(): void
     {
+        Mage::getModel('lcb_pluxee/api_session')->destroy();
         $this->request('api/Authentication/Session/logout');
     }
-
 
     /**
      * @return array

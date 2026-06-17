@@ -93,7 +93,15 @@
         <csp>
             <img-src>
                 <sayreward>*.sayreward.pl</sayreward>
+                <katalogb2b>katalogb2b.pl</katalogb2b>
             </img-src>
         </csp>
     </frontend>
+    <default>
+        <pluxee>
+            <api>
+                <endpoint>https://programlojalnosciowy.dev.sayreward.pl</endpoint>
+            </api>
+        </pluxee>
+    </default>
 </config>
