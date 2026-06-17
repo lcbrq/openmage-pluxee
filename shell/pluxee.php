@@ -44,6 +44,18 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
                 $product->save();
 
                 $this->output(sprintf("Imported product %s", $product->getLabel()));
+
+                if (!empty($productData['brand_id'])) {
+                    $brand = Mage::getModel('lcb_pluxee/brand')->load($productData['brand_id'], 'brand_id');
+                    $isNewBrand = !$brand->getId();
+                    $brand->setBrandId($productData['brand_id']);
+                    $brand->setLabel($productData['brand']);
+                    $brand->save();
+
+                    if ($isNewBrand) {
+                        $this->output(sprintf("Imported brand %s", $brand->getLabel()));
+                    }
+                }
             }
         }
 

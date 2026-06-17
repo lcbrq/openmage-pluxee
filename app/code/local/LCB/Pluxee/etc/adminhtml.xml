@@ -10,9 +10,14 @@
                     <sort_order>0</sort_order>
                     <action>adminhtml/adminPluxeeProduct</action>
                 </products>
+                <brands translate="title">
+                    <title>Brands</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/adminPluxeeBrand</action>
+                </brands>
                 <orders translate="title">
                     <title>Orders</title>
-                    <sort_order>1</sort_order>
+                    <sort_order>2</sort_order>
                     <action>adminhtml/adminPluxeeOrder</action>
                 </orders>
             </children>
@@ -33,9 +38,13 @@
                                 <title>Products</title>
                                 <sort_order>0</sort_order>
                             </products>
+                            <brands translate="title">
+                                <title>Brands</title>
+                                <sort_order>1</sort_order>
+                            </brands>
                             <orders translate="title">
                                 <title>Orders</title>
-                                <sort_order>0</sort_order>
+                                <sort_order>2</sort_order>
                             </orders>
                         </children>
                     </pluxee>

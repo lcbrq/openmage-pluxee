@@ -15,6 +15,14 @@ class LCB_Pluxee_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abst
     }
 
     /**
+     * @return LCB_Pluxee_Model_Brand
+     */
+    public function getBrand()
+    {
+        return Mage::getModel('lcb_pluxee/brand')->load($this->getBrandId(), 'brand_id');
+    }
+
+    /**
      * Get categories associated to product
      *
      * @param  LCB_Pluxee_Model_Product $product
