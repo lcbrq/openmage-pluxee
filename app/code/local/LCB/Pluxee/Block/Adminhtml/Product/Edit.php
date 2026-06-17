@@ -26,7 +26,7 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit extends Mage_Adminhtml_Block_Widge
     public function getHeaderText()
     {
         if (Mage::registry("product_data") && Mage::registry("product_data")->getId()) {
-            return Mage::helper('lcb_pluxee')->__("Edit Product '%s'", $this->htmlEscape(Mage::registry('product_data')->getTitle()));
+            return Mage::helper('lcb_pluxee')->__("Edit Product '%s'", $this->escapeHtml(Mage::registry('product_data')->getTitle()));
         } else {
             return Mage::helper('lcb_pluxee')->__("Add");
         }
