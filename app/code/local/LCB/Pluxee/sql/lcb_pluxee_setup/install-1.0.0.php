@@ -66,6 +66,13 @@ $productsTable = $installer->getConnection()->newTable($installer->getTable('lcb
             'Pluxee Brand ID'
         )
         ->addColumn(
+            'category_id',
+            Varien_Db_Ddl_Table::TYPE_INTEGER,
+            null,
+            array(),
+            'Pluxee Category ID'
+        )
+        ->addColumn(
             'item_type',
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,

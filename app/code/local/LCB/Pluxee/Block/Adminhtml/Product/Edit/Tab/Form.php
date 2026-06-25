@@ -20,6 +20,12 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit_Tab_Form extends Mage_Adminhtml_Bl
             'values' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toOptionArray()
         ));
 
+        $fieldset->addField('category', 'select', array(
+            'name' => 'category',
+            "label" => Mage::helper("lcb_pluxee")->__("Category"),
+            'values' => Mage::getSingleton('lcb_pluxee/system_config_source_product_category')->toOptionArray()
+        ));
+
         $fieldset->addField('label', 'text', array(
             'label' => Mage::helper('lcb_pluxee')->__('Title'),
             'class' => 'required-entry',

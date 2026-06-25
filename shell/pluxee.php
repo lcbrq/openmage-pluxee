@@ -17,10 +17,11 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
 
         $categories = $api->getCategories();
         foreach ($categories as $categoryData) {
-            $category = Mage::getModel('lcb_pluxee/category')->load($categoryData['id'], 'category_id');
-
-            $category->setCategoryId($categoryData['id']);
+            $categoryId = $categoryData['id'];
             unset($categoryData['id']);
+
+            $category = Mage::getModel('lcb_pluxee/category')->load($categoryId, 'category_id');
+            $category->setCategoryId($categoryId);
             $category->addData($categoryData);
             $category->save();
 
@@ -28,9 +29,11 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
 
             foreach ($products as $productData) {
                 $product = Mage::getModel('lcb_pluxee/product')->load($productData['id'], 'product_id');
+                $action = $product->getId() ? 'Updated' : 'Imported';
                 $product->setProductId($productData['id']);
                 unset($productData['id']);
 
+                $product->setCategoryId($categoryId);
                 $product->setPosition($productData['priority']);
                 $product->addData($productData);
                 foreach ($productData['references'] as $reference) {
@@ -43,7 +46,7 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
                 }
                 $product->save();
 
-                $this->output(sprintf("Imported product %s", $product->getLabel()));
+                $this->output(sprintf("%s product %s", $action, $product->getLabel()));
 
                 if (!empty($productData['brand_id'])) {
                     $brand = Mage::getModel('lcb_pluxee/brand')->load($productData['brand_id'], 'brand_id');

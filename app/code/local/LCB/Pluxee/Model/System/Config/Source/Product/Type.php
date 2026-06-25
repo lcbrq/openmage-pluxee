@@ -1,8 +1,5 @@
 <?php
 
-/**
- * @internal STR-19
- */
 class LCB_Pluxee_Model_System_Config_Source_Product_Type
 {
     /**

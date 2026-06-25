@@ -3,20 +3,20 @@
 /**
  * @author Tomasz Gregorczyk <tomasz@silpion.com.pl>
  */
-class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widget_Grid
+class LCB_Pluxee_Block_Adminhtml_Category_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
     public function __construct()
     {
         parent::__construct();
-        $this->setId('pluxeeProductsGrid');
-        $this->setDefaultSort('id');
+        $this->setId('pluxeeCategoriesGrid');
+        $this->setDefaultSort('entity_id');
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
     }
 
     protected function _prepareCollection()
     {
-        $collection = Mage::getModel('lcb_pluxee/product')->getCollection();
+        $collection = Mage::getModel('lcb_pluxee/category')->getCollection();
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -31,41 +31,17 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
             'index' => 'entity_id',
         ));
 
-        $this->addColumn('product_id', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Product ID'),
-            'index' => 'product_id',
-        ));
-
-        $this->addColumn('item_type', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Type'),
-            'index' => 'item_type',
-            'type' => 'options',
-            'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toArray(),
-        ));
-
-        $this->addColumn('category', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Category'),
-            'index' => 'category_id',
-            'type' => 'options',
-            'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_category')->toArray(),
-        ));
-
         $this->addColumn('label', array(
             'header' => Mage::helper('lcb_pluxee')->__('Label'),
             'index' => 'label',
         ));
 
-        $this->addColumn('price', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Price'),
-            'index' => 'price',
-        ));
-
         $this->addColumn('created_at', array(
-            'header'    => Mage::helper('lcb_pluxee')->__('Created At'),
-            'align'     => 'left',
-            'width'     => '100px',
-            'type'      => 'datetime',
-            'index'     => 'created_at',
+            'header' => Mage::helper('lcb_pluxee')->__('Created At'),
+            'align' => 'left',
+            'width' => '100px',
+            'type' => 'datetime',
+            'index' => 'created_at',
         ));
 
         $this->addExportType('*/*/exportCsv', Mage::helper('sales')->__('CSV'));
