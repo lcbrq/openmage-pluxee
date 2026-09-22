@@ -35,7 +35,7 @@ class LCB_Pluxee_CartController extends Mage_Core_Controller_Front_Action
         }
 
         if ($userLimitDaily = Mage::helper('lcb_pluxee')->getUserLimitDaily()) {
-            $purchasesCollection = Mage::getModel('lcb_pluxee/purchase')
+            $purchasesCollection = Mage::getModel('lcb_pluxee/order')
                     ->getCollection()
                     ->addFieldToFilter('customer_id', $customer->getId())
                     ->addFieldToFilter('created_at', ['from' => date('Y-m-d H:i:s', strtotime('-24 hours', time()))]);
@@ -49,7 +49,7 @@ class LCB_Pluxee_CartController extends Mage_Core_Controller_Front_Action
         }
 
         if ($generalLimitDaily = Mage::helper('lcb_pluxee')->getGeneralLimitDaily()) {
-            $purchasesCollection = Mage::getModel('lcb_pluxee/purchase')
+            $purchasesCollection = Mage::getModel('lcb_pluxee/order')
                     ->getCollection()
                     ->addFieldToFilter('created_at', ['from' => date('Y-m-d H:i:s', strtotime('-24 hours', time()))]);
             $purchasesCollectionAmountValues = $purchasesCollection->getColumnValues('worth');
