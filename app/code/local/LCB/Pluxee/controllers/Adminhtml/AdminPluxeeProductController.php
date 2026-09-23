@@ -173,6 +173,33 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeProductController extends Mage_Adminhtml_C
         $this->_redirect('*/*/');
     }
 
+    public function massStatusAction()
+    {
+        $productIds = $this->getRequest()->getPost('ids', array());
+        $status = $this->getRequest()->getParam('status');
+
+        try {
+            if (empty($productIds)) {
+                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select item(s).'));
+            } else {
+                foreach ($productIds as $id) {
+                    $model = Mage::getModel('lcb_pluxee/product')->load($id);
+                    if ($model->getId()) {
+                        $model->setData('active', $status)->save();
+                    }
+                }
+
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('adminhtml')->__('Total of %d record(s) have been updated.', count($productIds))
+                );
+            }
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+
+        $this->_redirect('*/*/');
+    }
+
     /**
      * Export order grid to CSV format
      */

@@ -43,6 +43,13 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
             'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toArray(),
         ));
 
+        $this->addColumn('active', array(
+            'header' => Mage::helper('lcb_pluxee')->__('Active'),
+            'index' => 'active',
+            'type' => 'options',
+            'options' => Mage::getModel('adminhtml/system_config_source_yesno')->toArray(),
+        ));
+
         $this->addColumn('category', array(
             'header' => Mage::helper('lcb_pluxee')->__('Category'),
             'index' => 'category_id',
@@ -56,7 +63,7 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
         ));
 
         $this->addColumn('price', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Price'),
+            'header' => Mage::helper('lcb_pluxee')->__('Value'),
             'index' => 'price',
         ));
 
@@ -88,6 +95,24 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
         $this->setMassactionIdField('id');
         $this->getMassactionBlock()->setFormFieldName('ids');
         $this->getMassactionBlock()->setUseSelectAll(true);
+
+        $statuses = Mage::getSingleton('adminhtml/system_config_source_enabledisable')->toOptionArray();
+        array_unshift($statuses, array('label' => '', 'value' => ''));
+
+        $this->getMassactionBlock()->addItem('status', array(
+            'label' => Mage::helper('lcb_pluxee')->__('Change status'),
+            'url' => $this->getUrl('*/*/massStatus', array('_current' => true)),
+            'additional' => array(
+                'visibility' => array(
+                    'name' => 'status',
+                    'type' => 'select',
+                    'class' => 'required-entry',
+                    'label' => Mage::helper('lcb_pluxee')->__('Status'),
+                    'values' => $statuses,
+                ),
+            ),
+        ));
+
         return $this;
     }
 }
