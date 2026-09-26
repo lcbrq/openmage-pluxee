@@ -10,6 +10,7 @@ DROP TABLE `lcb_pluxee_category`;
 DROP TABLE `lcb_pluxee_order`;
 DROP TABLE `lcb_pluxee_product`;
 DROP TABLE `lcb_pluxee_product_category`;
+DROP TABLE `lcb_pluxee_log`;
 DELETE FROM `core_resource` WHERE `code` = "lcb_pluxee_setup";
 ```
 
