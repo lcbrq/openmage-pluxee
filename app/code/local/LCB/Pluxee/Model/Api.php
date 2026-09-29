@@ -40,6 +40,11 @@ class LCB_Pluxee_Model_Api
     private $cookies = [];
 
     /**
+     * @var string
+     */
+    private $_responseBody = '';
+
+    /**
      * Class constructor
      */
     public function __construct()
@@ -136,7 +141,7 @@ class LCB_Pluxee_Model_Api
 
         if (!$card) {
             $data = array(
-              'id' => $this->userId,
+              'id' => $customer->getPluxeeUserId() ?? $this->userId,
               'references' => array(
                   array(
                     'reference_id' => (int) $product->getReferenceId(),
@@ -146,7 +151,7 @@ class LCB_Pluxee_Model_Api
             );
         } else {
             $data = array(
-              'id' => $this->userId,
+              'id' => $customer->getPluxeeUserId() ?? $this->userId,
               'references' => array(
                   array(
                     'reference_id' => (int) $product->getReferenceId(),
@@ -194,6 +199,7 @@ class LCB_Pluxee_Model_Api
             $pluxeeOrderData = $result['Response'];
             $order = Mage::getModel('lcb_pluxee/order');
             try {
+                $order->setSerial($pluxeeOrderData['reference'] ?? '');
                 $purchasedProducts = (array)$pluxeeOrderData['lines'];
                 foreach ($purchasedProducts as $purchasedProduct) {
                     $order->setCustomerId($customer->getId());
@@ -252,7 +258,6 @@ class LCB_Pluxee_Model_Api
 
 
     /**
-     *
      * @param Mage_Customer_Model_Customer $customer
      * @param Mage_Customer_Model_Customer_Address $address
      * @return array
@@ -275,8 +280,17 @@ class LCB_Pluxee_Model_Api
 
         $this->login();
 
-        $response = $this->request('api/UserManagement/Users/add', $data);
+        try {
+            $response = $this->request('api/UserManagement/Users/add', $data);
+        } catch (\Exception $e) {
+            $response = $this->_responseBody;
+        }
+
         $result = json_decode($response, true);
+
+        if (empty($result['Response']) && $result['Status']['code'] == 500) {
+            throw new \Exception($result['Status']['message']);
+        }
 
         return $result['Response'];
     }
@@ -298,10 +312,10 @@ class LCB_Pluxee_Model_Api
     }
 
     /**
- * @param  string $path
- * @param  array  $data
- * @return string
- */
+     * @param  string $path
+     * @param  array  $data
+     * @return string
+     */
     private function request($path, $data = array())
     {
         $url = rtrim($this->endpoint, '/') . '/' . ltrim($path, '/');
@@ -337,7 +351,7 @@ class LCB_Pluxee_Model_Api
         try {
             $response = $client->request($method, $url, $options);
             $status = $response->getStatusCode();
-            $responseBody = $response->getContent(false);
+            $this->_responseBody =  $response->getContent(false);
 
             foreach ($response->getHeaders(false)['set-cookie'] ?? [] as $setCookie) {
                 $parts = explode(';', $setCookie);
@@ -349,7 +363,7 @@ class LCB_Pluxee_Model_Api
             throw $e;
         }
 
-        $this->logRequest($path, $method, $data, $status, $responseBody);
+        $this->logRequest($path, $method, $data, $status, $this->_responseBody);
 
         return $response->getContent();
     }
