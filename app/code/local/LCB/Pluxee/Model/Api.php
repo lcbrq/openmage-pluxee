@@ -139,6 +139,12 @@ class LCB_Pluxee_Model_Api
     {
         $this->login();
 
+        try {
+            $this->request('api/Catalogue/Selections/clear', array('id' => $customer->getPluxeeUserId() ?? $this->userId));
+        } catch (\Exception $e) {
+            Mage::logException($e);
+        }
+
         if (!$card) {
             $data = array(
               'id' => $customer->getPluxeeUserId() ?? $this->userId,
