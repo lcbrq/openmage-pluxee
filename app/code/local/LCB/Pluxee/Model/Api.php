@@ -193,7 +193,24 @@ class LCB_Pluxee_Model_Api
 
         $selectionId = $result['Response']['id'];
 
-        $response = $this->request('api/Catalogue/Orders/add', ['selection_id' => $selectionId]);
+        if (!$customer->getPluxeeDeliveryAddress()) {
+            $address = $customer->getDefaultShippingAddress() ?: $customer->getDefaultBillingAddress();
+
+            $customer->setPluxeeDeliveryAddress([
+                'id' => (int) $customer->getPluxeeUserId(),
+                'first_name' => (string) $customer->getFirstname(),
+                'last_name' => (string) $customer->getLastname(),
+                'address_line_1' => $address ? (string) $address->getStreet(1) : '',
+                'address_line_2' => $address ? (string) $address->getStreet(2) : '',
+                'zipcode' => $address ? (string) $address->getPostcode() : '',
+                'city' => $address ? (string) $address->getCity() : '',
+                'country' => $address ? (string) $address->getCountryId() : '',
+                'phone' => $address ? (string) $address->getTelephone() : '',
+                'comment' => '',
+            ]);
+        }
+
+        $response = $this->request('api/Catalogue/Orders/add', ['selection_id' => $selectionId, 'delivery_address' => $customer->getPluxeeDeliveryAddress()]);
         $result = json_decode($response, true);
 
         if ($errors = $this->getErrors($result)) {
