@@ -79,6 +79,6 @@ class LCB_Pluxee_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widget_Gr
      */
     public function getRowUrl($row)
     {
-        return '#';
+        return $this->getUrl('*/*/view', array('id' => $row->getId()));
     }
 }

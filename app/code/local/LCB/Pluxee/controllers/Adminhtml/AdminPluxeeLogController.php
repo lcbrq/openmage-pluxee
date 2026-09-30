@@ -15,6 +15,15 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeLogController extends Mage_Adminhtml_Contr
         $this->renderLayout();
     }
 
+    public function viewAction()
+    {
+        $this->loadLayout();
+        $this->_setActiveMenu('pluxee/logs');
+        $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Logs'), Mage::helper('adminhtml')->__('Pluxee Logs'));
+        $this->_addContent($this->getLayout()->createBlock('lcb_pluxee/adminhtml_log_view'));
+        $this->renderLayout();
+    }
+
     /**
      * Export log grid to CSV format
      */

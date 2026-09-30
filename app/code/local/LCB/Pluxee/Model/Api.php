@@ -225,7 +225,31 @@ class LCB_Pluxee_Model_Api
     public function getOrder($number)
     {
         $this->login();
-        $response = $this->request('api/get_order/' . $number);
+        $response = $this->request('api/Catalogue/Orders/get', ['id' => $number]);
+
+        return json_decode($response);
+    }
+
+
+    /**
+     * @param string|null $searchTerm
+     * @return stdClass
+     */
+    public function getOrders($searchTerm = null)
+    {
+        $this->login();
+
+        $params = [
+            "filters" => [
+                "search" => [$searchTerm],
+                "sort" => [],
+                "pagination" => [
+                    "offset" => 0,
+                    "limit" => 0
+                ]
+            ]
+        ];
+        $response = $this->request('api/Catalogue/Orders/getList', $params);
 
         return json_decode($response);
     }
@@ -242,14 +266,14 @@ class LCB_Pluxee_Model_Api
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      * @return array
      */
-    public function getUser()
+    public function getUser($id = null)
     {
         $this->login();
 
-        $response = $this->request('api/UserManagement/Users/get', ['id' => (int) $this->userId]);
+        $response = $this->request('api/UserManagement/Users/get', ['id' => $id ?? $this->userId]);
 
         $result = json_decode($response, true);
 
