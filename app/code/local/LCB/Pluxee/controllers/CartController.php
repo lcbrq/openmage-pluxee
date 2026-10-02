@@ -16,6 +16,8 @@ class LCB_Pluxee_CartController extends Mage_Core_Controller_Front_Action
             return $this->_redirectReferer();
         }
 
+        $customer->setPluxeeDeliveryAddress($this->getRequest()->getParam('address'));
+
         Mage::log(Mage::helper('lcb_pluxee')->__('customer %s tries to purchase product %s', $customer->getId(), $product->getId()), null, 'pluxee.log', true);
         Mage::dispatchEvent(
             'lcb_pluxee_purchase_before',
