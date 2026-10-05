@@ -210,7 +210,13 @@ class LCB_Pluxee_Model_Api
             ]);
         }
 
-        $response = $this->request('api/Catalogue/Orders/add', ['selection_id' => $selectionId, 'delivery_address' => $customer->getPluxeeDeliveryAddress()]);
+        $payload = ['selection_id' => $selectionId, 'delivery_address' => $customer->getPluxeeDeliveryAddress()];
+
+        if ($deliveryEmail = $customer->getDeliveryEmail()) {
+            $payload['delivery_email'] = $deliveryEmail;
+        }
+
+        $response = $this->request('api/Catalogue/Orders/add', $payload);
         $result = json_decode($response, true);
 
         if ($errors = $this->getErrors($result)) {
