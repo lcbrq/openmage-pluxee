@@ -109,7 +109,7 @@ class LCB_Pluxee_Model_Api
     {
         $this->login();
 
-        $response = $this->request('api/Catalogue/Cache/getCategoryProducts', ['id' => $categoryId]);
+        $response = $this->request('api/Catalogue/Cache/listProducts', ['category_id' => $categoryId]);
         $result = json_decode($response, true);
 
         return $result['Response']['list'];

@@ -11,8 +11,10 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
      */
     public function run()
     {
-        $api = Mage::getModel('lcb_pluxee/api');
+        $update = $this->getArg('update');
+        $productsForUpdate = 0;
 
+        $api = Mage::getModel('lcb_pluxee/api');
         $api->login();
 
         $categories = $api->getCategories();
@@ -29,6 +31,10 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
 
             foreach ($products as $productData) {
                 $product = Mage::getModel('lcb_pluxee/product')->load($productData['id'], 'product_id');
+                if (!$update && $product->getId()) {
+                    $productsForUpdate++;
+                    continue;
+                }
                 $action = $product->getId() ? 'Updated' : 'Imported';
                 $product->setProductId($productData['id']);
                 unset($productData['id']);
@@ -60,6 +66,10 @@ class LCB_Pluxee_Shell extends Mage_Shell_Abstract
                     }
                 }
             }
+        }
+
+        if (!$update && $productsForUpdate) {
+            $this->output(sprintf("There are %d products that were not updated. Use --update param to update them.", $productsForUpdate));
         }
 
         $api->logout();
