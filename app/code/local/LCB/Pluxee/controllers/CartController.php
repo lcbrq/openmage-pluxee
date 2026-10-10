@@ -89,6 +89,8 @@ class LCB_Pluxee_CartController extends Mage_Core_Controller_Front_Action
                 'price' => $product->getPrice(),
             ])->save();
 
+            Mage::helper('lcb_pluxee')->sendPurchaseEmail($customer, $product, $order);
+
             Mage::dispatchEvent(
                 'lcb_pluxee_purchase_after',
                 array(

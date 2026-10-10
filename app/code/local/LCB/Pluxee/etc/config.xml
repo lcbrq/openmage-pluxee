@@ -59,6 +59,15 @@
                 </setup>
             </lcb_pluxee_setup>
         </resources>
+        <template>
+            <email>
+                <pluxee_purchase translate="label" module="lcb_pluxee">
+                    <label>Pluxee Purchase Email Template</label>
+                    <file>pluxee_purchase.html</file>
+                    <type>html</type>
+                </pluxee_purchase>
+            </email>
+        </template>
     </global>
     <admin>
         <routers>

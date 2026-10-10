@@ -1,4 +1,6 @@
 app/code/local/LCB/Pluxee
 app/etc/modules/LCB_Pluxee.xml
 app/locale/pl_PL/LCB_Pluxee.csv
+app/locale/en_US/template/email/pluxee_purchase.html
+app/locale/pl_PL/template/email/pluxee_purchase.html
 shell/pluxee.php

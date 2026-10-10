@@ -1,0 +1,47 @@
+<!--@subject Potwierdzenie zakupu nagrody Pluxee @-->
+<!--@vars
+{"var customer.name":"Imię i nazwisko klienta",
+"var product.name":"Nazwa produktu",
+"var order.serial":"Numer seryjny",
+"var order.pin":"PIN",
+"var order.expires":"Data ważności"}
+@-->
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td class="action-content">
+            <h1>{{var customer.name}},</h1>
+
+            <p>Dziękujemy za zakup. Poniżej znajdują się szczegóły Twojej nagrody:</p>
+
+            <table cellpadding="3" cellspacing="0" border="0">
+                <tr>
+                    <td><strong>Produkt:</strong></td>
+                    <td>{{var product.name}}</td>
+                </tr>
+                {{depend order.serial}}
+                <tr>
+                    <td><strong>Numer seryjny:</strong></td>
+                    <td>{{var order.serial}}</td>
+                </tr>
+                {{/depend}}
+                {{depend order.pin}}
+                <tr>
+                    <td><strong>PIN:</strong></td>
+                    <td>{{var order.pin}}</td>
+                </tr>
+                {{/depend}}
+                {{depend order.expires}}
+                <tr>
+                    <td><strong>Data ważności:</strong></td>
+                    <td>{{var order.expires}}</td>
+                </tr>
+                {{/depend}}
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

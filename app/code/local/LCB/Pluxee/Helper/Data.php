@@ -49,4 +49,51 @@ class LCB_Pluxee_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (int) Mage::getStoreConfig(self::XPATH_GENERAL_LIMIT_DAILY);
     }
+
+    /**
+     * @return Mage_Core_Model_Email_Template
+     */
+    public function getEmailTemplate()
+    {
+        $emailTemplate = Mage::getModel('core/email_template');
+
+        $templateId = Mage::getStoreConfig('pluxee/order/email_template', Mage::app()->getStore()->getId());
+        $emailTemplate->load($templateId);
+        if (!$emailTemplate || !$emailTemplate->getId()) {
+            $emailTemplate->loadDefault('pluxee_purchase');
+        }
+
+        Mage::dispatchEvent('lcb_pluxee_purchase_email_template', array('template' => $emailTemplate));
+
+        return $emailTemplate;
+    }
+
+    /**
+     * @param  Mage_Customer_Model_Customer $customer
+     * @param  LCB_Pluxee_Model_Product     $product
+     * @param  LCB_Pluxee_Model_Order       $order
+     * @return bool
+     */
+    public function sendPurchaseEmail($customer, $product, $order)
+    {
+        $emailTemplate = $this->getEmailTemplate();
+        $emailTemplateVariables = array(
+            'customer' => $customer,
+            'product' => $product,
+            'order' => $order,
+        );
+
+        if ($expires = $order->getExpires()) {
+            $order->setExpires(date('d.m.Y', strtotime((string) $expires)));
+        }
+
+        $senderName = Mage::getStoreConfig('trans_email/ident_general/name');
+        $senderEmail = Mage::getStoreConfig('trans_email/ident_general/email');
+        $emailTemplate->setSenderName($senderName);
+        $emailTemplate->setSenderEmail($senderEmail);
+
+        $emailTemplate->send($customer->getEmail(), $customer->getName(), $emailTemplateVariables);
+
+        return true;
+    }
 }
