@@ -216,6 +216,10 @@ class LCB_Pluxee_Model_Api
             $payload['delivery_email'] = $deliveryEmail;
         }
 
+        if ($deliveryPhone = $customer->getDeliveryPhone()) {
+            $payload['delivery_phone'] = $deliveryPhone;
+        }
+
         $response = $this->request('api/Catalogue/Orders/add', $payload);
         $result = json_decode($response, true);
 

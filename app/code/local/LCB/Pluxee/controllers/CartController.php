@@ -81,6 +81,14 @@ class LCB_Pluxee_CartController extends Mage_Core_Controller_Front_Action
 
         if ($order->getId()) {
             Mage::log(Mage::helper('lcb_pluxee')->__('pluxee order %s', $order->getId()), null, 'order.log', true);
+
+            Mage::getModel('lcb_pluxee/order_item')->setData([
+                'order_id' => $order->getId(),
+                'product_id' => $product->getId(),
+                'reference_id' => $product->getReferenceId(),
+                'price' => $product->getPrice(),
+            ])->save();
+
             Mage::dispatchEvent(
                 'lcb_pluxee_purchase_after',
                 array(

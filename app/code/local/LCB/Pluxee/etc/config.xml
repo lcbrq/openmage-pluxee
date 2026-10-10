@@ -2,7 +2,7 @@
 <config>
     <modules>
         <LCB_Pluxee>
-            <version>1.3.2</version>
+            <version>1.4.0</version>
         </LCB_Pluxee>
     </modules>
     <global>
@@ -39,6 +39,9 @@
                     <order>
                         <table>lcb_pluxee_order</table>
                     </order>
+                    <order_item>
+                        <table>lcb_pluxee_order_item</table>
+                    </order_item>
                     <product>
                         <table>lcb_pluxee_product</table>
                     </product>

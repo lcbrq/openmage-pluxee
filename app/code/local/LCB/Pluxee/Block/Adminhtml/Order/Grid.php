@@ -82,7 +82,7 @@ class LCB_Pluxee_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Widget_
      */
     public function getRowUrl($row)
     {
-        return '#';
+        return $this->getUrl('*/*/edit', array('id' => $row->getId()));
     }
 
     protected function _prepareMassaction()

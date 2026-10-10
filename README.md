@@ -8,6 +8,7 @@ Unofficial Pluxee Group integration for OpenMage (Magento 1)
 DROP TABLE `lcb_pluxee_brand`;
 DROP TABLE `lcb_pluxee_category`;
 DROP TABLE `lcb_pluxee_order`;
+DROP TABLE `lcb_pluxee_order_item`;
 DROP TABLE `lcb_pluxee_product`;
 DROP TABLE `lcb_pluxee_product_category`;
 DROP TABLE `lcb_pluxee_log`;

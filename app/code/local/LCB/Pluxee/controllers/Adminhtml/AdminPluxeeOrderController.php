@@ -38,7 +38,8 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeOrderController extends Mage_Adminhtml_Con
             Mage::register('order_data', $model);
             $this->loadLayout();
             $this->_setActiveMenu('lcb_pluxee/orders');
-            $this->_addContent($this->getLayout()->createBlock('lcb_pluxee/adminhtml_order_edit'))->_addLeft($this->getLayout()->createBlock('lcb_pluxee/adminhtml_order_edit_tabs'));
+            $this->_addContent($this->getLayout()->createBlock('lcb_pluxee/adminhtml_order_view'))
+                ->_addLeft($this->getLayout()->createBlock('lcb_pluxee/adminhtml_order_view_tabs'));
             $this->renderLayout();
         } else {
             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('lcb_pluxee')->__('Item does not exist.'));
