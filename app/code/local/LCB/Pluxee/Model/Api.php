@@ -90,6 +90,17 @@ class LCB_Pluxee_Model_Api
     /**
      * @return array
      */
+    public function getCart()
+    {
+        $response = $this->request('api/Catalogue/Selections/get');
+        $result = json_decode($response, true);
+
+        return $result['Response'] ?? [];
+    }
+
+    /**
+     * @return array
+     */
     public function getCategories()
     {
         $this->login();
@@ -102,14 +113,28 @@ class LCB_Pluxee_Model_Api
     }
 
     /**
-     * @param int $categoryId
      * @return array
      */
-    public function getProducts($categoryId)
+    public function getBrands()
     {
         $this->login();
 
-        $response = $this->request('api/Catalogue/Cache/listProducts', ['category_id' => $categoryId]);
+        $response = $this->request('api/Catalogue/Cache/listBrands');
+
+        $result = json_decode($response, true);
+
+        return $result['Response']['list'];
+    }
+
+    /**
+     * @param array $filters
+     * @return array
+     */
+    public function getProducts($filters)
+    {
+        $this->login();
+
+        $response = $this->request('api/Catalogue/Cache/listProducts', $filters);
         $result = json_decode($response, true);
 
         return $result['Response']['list'];
@@ -140,7 +165,10 @@ class LCB_Pluxee_Model_Api
         $this->login();
 
         try {
-            $this->request('api/Catalogue/Selections/clear', array('id' => $customer->getPluxeeUserId() ?? $this->userId));
+            $cart = $this->getCart();
+            if (!empty($cart['id'])) {
+                $this->request('api/Catalogue/Selections/clear', array('id' => $cart['id']));
+            }
         } catch (\Exception $e) {
             Mage::logException($e);
         }
