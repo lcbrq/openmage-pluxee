@@ -91,6 +91,8 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
             $this->addColumn('description', array(
                 'header' => Mage::helper('lcb_pluxee')->__('Description'),
                 'index' => 'description',
+                'renderer' => 'adminhtml/widget_grid_column_renderer_longtext',
+                'escape' => false,
             ));
         }
 

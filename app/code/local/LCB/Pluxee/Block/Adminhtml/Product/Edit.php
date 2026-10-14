@@ -23,6 +23,15 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit extends Mage_Adminhtml_Block_Widge
             }";
     }
 
+    protected function _prepareLayout()
+    {
+        if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
+            $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
+            $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+        }
+        return parent::_prepareLayout();
+    }
+
     public function getHeaderText()
     {
         if (Mage::registry("product_data") && Mage::registry("product_data")->getId()) {

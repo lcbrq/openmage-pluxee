@@ -20,8 +20,8 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit_Tab_Form extends Mage_Adminhtml_Bl
             'values' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toOptionArray()
         ));
 
-        $fieldset->addField('category', 'select', array(
-            'name' => 'category',
+        $fieldset->addField('category_id', 'select', array(
+            'name' => 'category_id',
             "label" => Mage::helper("lcb_pluxee")->__("Category"),
             'values' => Mage::getSingleton('lcb_pluxee/system_config_source_product_category')->toOptionArray()
         ));
@@ -33,11 +33,28 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit_Tab_Form extends Mage_Adminhtml_Bl
             'name' => 'label',
         ));
 
-        $fieldset->addField('description', 'textarea', array(
-            'label' => Mage::helper('lcb_pluxee')->__('Description'),
-            'class' => '',
-            'name' => 'description',
-        ));
+        if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
+            $wysiwygConfig = Mage::getSingleton('cms/wysiwyg_config')->getConfig(
+                array(
+                    'add_widgets' => false,
+                    'add_variables' => false,
+                    'add_images' => true,
+                )
+            );
+            $fieldset->addField('description', 'editor', array(
+                'label' => Mage::helper('lcb_pluxee')->__('Description'),
+                'name' => 'description',
+                'wysiwyg' => true,
+                'config' => $wysiwygConfig,
+                'style' => 'width: 600px; height: 300px;',
+            ));
+        } else {
+            $fieldset->addField('description', 'textarea', array(
+                'label' => Mage::helper('lcb_pluxee')->__('Description'),
+                'class' => '',
+                'name' => 'description',
+            ));
+        }
 
         $fieldset->addField('purchase_info', 'textarea', array(
             'label' => Mage::helper('lcb_pluxee')->__('Purchase Info'),

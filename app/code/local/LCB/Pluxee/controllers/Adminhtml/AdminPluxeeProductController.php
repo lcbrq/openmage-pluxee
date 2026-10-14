@@ -217,9 +217,15 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeProductController extends Mage_Adminhtml_C
                     return $this->_redirect('*/*/index');
                 }
 
-                $csv = array_map(function ($v) {
-                    return str_getcsv($v, ",");
-                }, file($csvFileLocation, FILE_SKIP_EMPTY_LINES));
+                $csv = array();
+                $handle = fopen($csvFileLocation, 'r');
+                while (($row = fgetcsv($handle, 0, ',')) !== false) {
+                    if ($row === array(null) || $row === false) {
+                        continue;
+                    }
+                    $csv[] = $row;
+                }
+                fclose($handle);
                 $keys = array_shift($csv);
 
                 foreach ($csv as $i => $row) {
