@@ -201,11 +201,76 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeProductController extends Mage_Adminhtml_C
     }
 
     /**
+     * Import products data from CSV file
+     *
+     * @return void
+     */
+    public function uploadCsvAction()
+    {
+        if ($_FILES) {
+            try {
+                $csvFileLocation = $_FILES['productsCsv']['tmp_name'];
+                $csvFileType = $_FILES['productsCsv']['type'];
+
+                if (!in_array($csvFileType, array('text/csv', 'application/vnd.ms-excel'))) {
+                    Mage::getSingleton('adminhtml/session')->addError(Mage::helper('lcb_pluxee')->__('Invalid file format upload attempt') . " $csvFileType");
+                    return $this->_redirect('*/*/index');
+                }
+
+                $csv = array_map(function ($v) {
+                    return str_getcsv($v, ",");
+                }, file($csvFileLocation, FILE_SKIP_EMPTY_LINES));
+                $keys = array_shift($csv);
+
+                foreach ($csv as $i => $row) {
+                    if (count($keys) !== count($row)) {
+                        unset($csv[$i]);
+                        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('lcb_pluxee')->__('Invalid number of elements in line %s', $i));
+                        continue;
+                    }
+                    $csv[$i] = array_combine($keys, $row);
+                }
+
+                if (!$csv) {
+                    Mage::getSingleton('adminhtml/session')->addError(Mage::helper('lcb_pluxee')->__('Invalid file format upload attempt'));
+                    return $this->_redirect('*/*/index');
+                }
+
+                $allowedFields = array('active', 'item_type', 'category_id', 'brand_id', 'label', 'description', 'purchase_info', 'price', 'position');
+
+                $i = 0;
+                foreach ($csv as $rowNumber => $data) {
+                    if (empty($data['product_id'])) {
+                        Mage::getSingleton('adminhtml/session')->addWarning(Mage::helper('lcb_pluxee')->__('Missing product_id, skipping row %s', $rowNumber));
+                        continue;
+                    }
+
+                    $model = Mage::getModel('lcb_pluxee/product')->load($data['product_id'], 'product_id');
+                    if (!$model->getId()) {
+                        Mage::getSingleton('adminhtml/session')->addWarning(Mage::helper('lcb_pluxee')->__('Product with product_id %s not found, skipping row %s', $data['product_id'], $rowNumber));
+                        continue;
+                    }
+
+                    $updateData = array_intersect_key($data, array_flip($allowedFields));
+                    $model->addData($updateData)->save();
+                    $i++;
+                }
+
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('lcb_pluxee')->__('Total of %d product(s) have been imported.', $i));
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
+        }
+
+        $this->_redirect('*/*/index');
+    }
+
+    /**
      * Export order grid to CSV format
      */
     public function exportCsvAction()
     {
-        $fileName = 'pluxee_product.csv';
+        $fileName = 'pluxee_products.csv';
         $grid = $this->getLayout()->createBlock('lcb_pluxee/adminhtml_product_grid');
         $this->_prepareDownloadResponse($fileName, $grid->getCsvFile());
     }
@@ -215,7 +280,7 @@ class LCB_Pluxee_Adminhtml_AdminPluxeeProductController extends Mage_Adminhtml_C
      */
     public function exportExcelAction()
     {
-        $fileName = 'pluxee_product.xml';
+        $fileName = 'pluxee_products.xml';
         $grid = $this->getLayout()->createBlock('lcb_pluxee/adminhtml_product_grid');
         $this->_prepareDownloadResponse($fileName, $grid->getExcelFile($fileName));
     }

@@ -23,30 +23,34 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
 
     protected function _prepareColumns()
     {
-        $this->addColumn('entity_id', array(
-            'header' => Mage::helper('lcb_pluxee')->__('ID'),
-            'align' => 'right',
-            'width' => '50px',
-            'type' => 'number',
-            'index' => 'entity_id',
-        ));
+        if (!$this->_isExport) {
+            $this->addColumn('entity_id', array(
+                'header' => Mage::helper('lcb_pluxee')->__('ID'),
+                'align' => 'right',
+                'width' => '50px',
+                'type' => 'number',
+                'index' => 'entity_id',
+            ));
+        }
 
         $this->addColumn('product_id', array(
             'header' => Mage::helper('lcb_pluxee')->__('Product ID'),
             'index' => 'product_id',
         ));
 
-        $this->addColumn('reference_id', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Reference ID'),
-            'index' => 'reference_id',
-        ));
+        if (!$this->_isExport) {
+            $this->addColumn('reference_id', array(
+                'header' => Mage::helper('lcb_pluxee')->__('Reference ID'),
+                'index' => 'reference_id',
+            ));
 
-        $this->addColumn('item_type', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Type'),
-            'index' => 'item_type',
-            'type' => 'options',
-            'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toArray(),
-        ));
+            $this->addColumn('item_type', array(
+                'header' => Mage::helper('lcb_pluxee')->__('Type'),
+                'index' => 'item_type',
+                'type' => 'options',
+                'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_type')->toArray(),
+            ));
+        }
 
         $this->addColumn('active', array(
             'header' => Mage::helper('lcb_pluxee')->__('Active'),
@@ -55,42 +59,71 @@ class LCB_Pluxee_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widge
             'options' => Mage::getModel('adminhtml/system_config_source_yesno')->toArray(),
         ));
 
-        $this->addColumn('category', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Category'),
-            'index' => 'category_id',
-            'type' => 'options',
-            'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_category')->toArray(),
-        ));
+        if (!$this->_isExport) {
+            $this->addColumn('category', array(
+                'header' => Mage::helper('lcb_pluxee')->__('Category'),
+                'index' => 'category_id',
+                'type' => 'options',
+                'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_category')->toArray(),
+            ));
 
-        $this->addColumn('brand', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Brand'),
-            'index' => 'brand_id',
-            'type' => 'options',
-            'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_brand')->toArray(),
-        ));
+            $this->addColumn('brand', array(
+                'header' => Mage::helper('lcb_pluxee')->__('Brand'),
+                'index' => 'brand_id',
+                'type' => 'options',
+                'options' => Mage::getSingleton('lcb_pluxee/system_config_source_product_brand')->toArray(),
+            ));
+        }
 
         $this->addColumn('label', array(
             'header' => Mage::helper('lcb_pluxee')->__('Label'),
             'index' => 'label',
         ));
 
-        $this->addColumn('price', array(
-            'header' => Mage::helper('lcb_pluxee')->__('Value'),
-            'index' => 'price',
-        ));
+        if (!$this->_isExport) {
+            $this->addColumn('price', array(
+                'header' => Mage::helper('lcb_pluxee')->__('Value'),
+                'index' => 'price',
+            ));
+        }
 
-        $this->addColumn('created_at', array(
-            'header'    => Mage::helper('lcb_pluxee')->__('Created At'),
-            'align'     => 'left',
-            'width'     => '100px',
-            'type'      => 'datetime',
-            'index'     => 'created_at',
-        ));
+        if ($this->_isExport) {
+            $this->addColumn('description', array(
+                'header' => Mage::helper('lcb_pluxee')->__('Description'),
+                'index' => 'description',
+            ));
+        }
+
+        if (!$this->_isExport) {
+            $this->addColumn('created_at', array(
+                'header'    => Mage::helper('lcb_pluxee')->__('Created At'),
+                'align'     => 'left',
+                'width'     => '100px',
+                'type'      => 'datetime',
+                'index'     => 'created_at',
+            ));
+        }
 
         $this->addExportType('*/*/exportCsv', Mage::helper('sales')->__('CSV'));
         $this->addExportType('*/*/exportExcel', Mage::helper('sales')->__('Excel'));
 
         return parent::_prepareColumns();
+    }
+
+    /**
+     * Retrieve headers row array for export
+     *
+     * @return array
+     */
+    protected function _getExportHeaders()
+    {
+        $row = array();
+        foreach ($this->_columns as $column) {
+            if (!$column->getIsSystem()) {
+                $row[] = $column->getData('index');
+            }
+        }
+        return $row;
     }
 
     /**

@@ -12,7 +12,7 @@ class LCB_Pluxee_Block_Adminhtml_Product_Edit extends Mage_Adminhtml_Block_Widge
         $this->_updateButton("delete", "label", Mage::helper('lcb_pluxee')->__("Delete"));
 
         $this->_addButton("saveandcontinue", array(
-            "label" => Mage::helper('lcb_pluxee')->__("Save And Continue Edit"),
+            "label" => Mage::helper('lcb_pluxee')->__("Save and Continue Edit"),
             "onclick" => "saveAndContinueEdit()",
             "class" => "save",
                 ), -100);
