@@ -198,7 +198,11 @@ class LCB_Pluxee_Model_Api
             );
         }
 
-        $response = $this->request('api/Catalogue/Selections/addItems', $data);
+        try {
+            $response = $this->request('api/Catalogue/Selections/addItems', $data);
+        } catch (\Exception $e) {
+            $response = $this->_responseBody;
+        }
 
         $result = json_decode($response, true);
         $errors = $this->getErrors($result);
@@ -246,6 +250,7 @@ class LCB_Pluxee_Model_Api
 
         if ($deliveryPhone = $customer->getDeliveryPhone()) {
             $payload['delivery_phone'] = $deliveryPhone;
+            $payload['delivery_address']['phone'] = $deliveryPhone;
         }
 
         $response = $this->request('api/Catalogue/Orders/add', $payload);
@@ -310,6 +315,7 @@ class LCB_Pluxee_Model_Api
                 ]
             ]
         ];
+
         $response = $this->request('api/Catalogue/Orders/getList', $params);
 
         return json_decode($response);
@@ -391,9 +397,13 @@ class LCB_Pluxee_Model_Api
             foreach ($result['Status']['errors'] as $error) {
                 $errors[] = $error['error'];
             }
-
-            return $errors;
         }
+
+        if (isset($result['Status']['code']) && isset($result['Status']['message']) && $result['Status']['code'] == 500) {
+            $errors[] = $result['Status']['message'];
+        }
+
+        return $errors;
     }
 
     /**
