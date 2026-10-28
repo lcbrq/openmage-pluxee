@@ -285,15 +285,15 @@ class LCB_Pluxee_Model_Api
     }
 
     /**
-     * @param string $number
+     * @param string $id
      * @return stdClass
      */
-    public function getOrder($number)
+    public function getOrder($id)
     {
         $this->login();
-        $response = $this->request('api/Catalogue/Orders/get', ['id' => $number]);
+        $response = $this->request('api/Catalogue/Orders/get', ['id' => $id]);
 
-        return json_decode($response);
+        return json_decode($response, true);
     }
 
 
