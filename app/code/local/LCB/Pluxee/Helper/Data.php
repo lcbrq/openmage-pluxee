@@ -92,7 +92,10 @@ class LCB_Pluxee_Helper_Data extends Mage_Core_Helper_Abstract
         $emailTemplate->setSenderName($senderName);
         $emailTemplate->setSenderEmail($senderEmail);
 
-        $emailTemplate->send($customer->getEmail(), $customer->getName(), $emailTemplateVariables);
+        $receiverEmail = $customer->getPluxeeDeliveryEmail() ?? $customer->getEmail();
+        $receiverName = $customer->getPluxeeDeliveryName() ?? $customer->getName();
+
+        $emailTemplate->send($receiverEmail, $receiverName, $emailTemplateVariables);
 
         return true;
     }
