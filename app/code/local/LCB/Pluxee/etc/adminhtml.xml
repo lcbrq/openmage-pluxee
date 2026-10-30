@@ -30,6 +30,11 @@
                     <sort_order>4</sort_order>
                     <action>adminhtml/adminPluxeeLog</action>
                 </logs>
+                <cards translate="title">
+                    <title>Cards</title>
+                    <sort_order>5</sort_order>
+                    <action>adminhtml/adminPluxeeCard</action>
+                </cards>
             </children>
         </pluxee>
     </menu>
@@ -64,6 +69,10 @@
                                 <title>Logs</title>
                                 <sort_order>4</sort_order>
                             </logs>
+                            <cards translate="title">
+                                <title>Cards</title>
+                                <sort_order>5</sort_order>
+                            </cards>
                         </children>
                     </pluxee>
                     <system>

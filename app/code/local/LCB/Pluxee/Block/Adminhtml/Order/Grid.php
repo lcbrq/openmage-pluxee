@@ -39,6 +39,11 @@ class LCB_Pluxee_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Widget_
             'index' => 'order_id',
         ));
 
+        $this->addColumn('increment_id', array(
+            'header' => Mage::helper('lcb_pluxee')->__('Increment ID'),
+            'index' => 'increment_id',
+        ));
+
         $this->addColumn('customer_id', array(
             'header' => Mage::helper('lcb_pluxee')->__('Customer ID'),
             'align' => 'right',

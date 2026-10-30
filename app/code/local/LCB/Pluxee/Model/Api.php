@@ -266,6 +266,7 @@ class LCB_Pluxee_Model_Api
             $order = Mage::getModel('lcb_pluxee/order');
             try {
                 $order->setSerial($pluxeeOrderData['reference'] ?? '');
+                $order->setIncrementId($pluxeeOrderData['reference'] ?? '');
                 $purchasedProducts = (array)$pluxeeOrderData['lines'];
                 foreach ($purchasedProducts as $purchasedProduct) {
                     $order->setCustomerId($customer->getId());
