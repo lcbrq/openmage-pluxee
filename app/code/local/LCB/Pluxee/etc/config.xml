@@ -108,6 +108,15 @@
                 </lcb_pluxee>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <LCB_Pluxee>
+                    <files>
+                        <default>LCB_Pluxee.csv</default>
+                    </files>
+                </LCB_Pluxee>
+            </modules>
+        </translate>
         <csp>
             <img-src>
                 <sayreward>*.sayreward.pl</sayreward>
