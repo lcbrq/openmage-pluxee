@@ -2,7 +2,7 @@
 <config>
     <modules>
         <LCB_Pluxee>
-            <version>1.5.0</version>
+            <version>1.6.0</version>
         </LCB_Pluxee>
     </modules>
     <global>
@@ -69,6 +69,18 @@
             </email>
         </template>
     </global>
+    <crontab>
+        <jobs>
+            <lcb_pluxee_fetch_order_statuses>
+                <schedule>
+                    <cron_expr>0 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>lcb_pluxee/cron::fetchOrderStatuses</model>
+                </run>
+            </lcb_pluxee_fetch_order_statuses>
+        </jobs>
+    </crontab>
     <admin>
         <routers>
             <adminhtml>
